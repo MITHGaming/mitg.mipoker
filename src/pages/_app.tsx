@@ -4,13 +4,16 @@ import '@/styles/fonts.css';
 import '@/styles/resets/reset.css';
 import '@/styles/resets/_modern-normalize.css';
 import LanguageProvider from '@/contexts/LanguageContext';
+import { SocketContext, socket } from '@/contexts/SocketContext';
 
 export const MyApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <LanguageProvider>
-      <Layout>
-        <Component {...pageProps} key={router.route} />
-      </Layout>
+      <SocketContext.Provider value={socket}>
+        <Layout>
+          <Component {...pageProps} key={router.route} />
+        </Layout>
+      </SocketContext.Provider>
     </LanguageProvider>
   );
 };
