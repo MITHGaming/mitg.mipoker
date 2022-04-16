@@ -1,10 +1,11 @@
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { Action } from 'redux';
 import { createWrapper } from 'next-redux-wrapper';
-import { statusSlice } from './slicers';
+import { socketSlicer, statusSlice } from './slicers';
 
 const store = configureStore({
   reducer: {
+    [socketSlicer.name]: socketSlicer.reducer,
     [statusSlice.name]: statusSlice.reducer,
   },
   devTools: true,
