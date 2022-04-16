@@ -1,6 +1,6 @@
 const env = {
   SOCKET: {
-    URL: process.env.SOCKET_URL || `http://localhost:3001`,
+    URL: process.env.NEXT_PUBLIC_SOCKET_URL || `http://localhost:3001`,
   },
 };
 
