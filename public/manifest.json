@@ -1,6 +1,6 @@
 {
-  "name": "mitg-template-nextjs",
-  "short_name": "mitg",
+  "name": "miPoker",
+  "short_name": "miPoker",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFB923",

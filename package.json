@@ -30,10 +30,14 @@
     ]
   },
   "dependencies": {
+    "@reduxjs/toolkit": "1.8.1",
     "@stitches/react": "1.2.7",
     "next": "12.1.5",
+    "next-redux-wrapper": "7.0.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",
+    "react-redux": "8.0.0",
+    "redux": "4.1.2",
     "socket.io-client": "4.4.1"
   },
   "devDependencies": {
