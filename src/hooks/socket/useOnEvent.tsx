@@ -9,8 +9,6 @@ export const useOnEvent = (socket: Socket | null, eventName: string) => {
       setRes(res);
     });
 
-    console.log(socket?.id);
-
     return () => {
       socket?.off(eventName);
     };
