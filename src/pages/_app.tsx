@@ -4,17 +4,14 @@ import '@/styles/fonts.css';
 import '@/styles/resets/reset.css';
 import '@/styles/resets/_modern-normalize.css';
 import LanguageProvider from '@/contexts/LanguageContext';
-import { SocketProvider } from '@/contexts/SocketContext';
 import { wrapper } from '@/store';
 
 export const MyApp = ({ Component, pageProps, router }: AppProps) => {
   return (
     <LanguageProvider>
-      <SocketProvider>
-        <Layout>
-          <Component {...pageProps} key={router.route} />
-        </Layout>
-      </SocketProvider>
+      <Layout>
+        <Component {...pageProps} key={router.route} />
+      </Layout>
     </LanguageProvider>
   );
 };

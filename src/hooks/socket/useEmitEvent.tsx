@@ -1,9 +1,12 @@
-import { SocketContext } from '@/contexts/SocketContext';
 import { httpSocketResponseData } from '@/typings/socket';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Socket } from 'socket.io-client';
 
-export const useEmitEvent = (eventName = `status:ok`, payload: any) => {
-  const socket = useContext(SocketContext);
+export const useEmitEvent = (
+  socket: Socket | null,
+  eventName = `status:ok`,
+  payload: any,
+) => {
   const [response, setResponse] = useState<any>(null);
   const [error, setError] = useState<any>(null);
 
@@ -22,6 +25,12 @@ export const useEmitEvent = (eventName = `status:ok`, payload: any) => {
       }
     });
   };
+
+  useEffect(() => {
+    return () => {
+      socket?.off(eventName);
+    };
+  }, []);
 
   return {
     response,

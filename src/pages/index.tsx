@@ -1,4 +1,5 @@
 import { useEmitEvent } from '@/hooks/socket/useEmitEvent';
+import { useSocket } from '@/hooks/socket/useSocket';
 import useTranslation from '@/hooks/useTranslation';
 import { selectIsLoading, setLoading } from '@/store/slicers';
 import { Page } from '@/typings/page';
@@ -7,12 +8,12 @@ import { useSelector, useStore } from 'react-redux';
 
 export const Home: Page = () => {
   const { t, changeLanguage, locale } = useTranslation();
-  const { response, sendEvent } = useEmitEvent(`status:ok`, {
-    status: `test`,
-  });
   const store = useStore();
-
   const isLoading = useSelector(selectIsLoading());
+  const socket = useSocket(``);
+  const { sendEvent, response } = useEmitEvent(socket, `status:ok`, {
+    status: `200`,
+  });
 
   const handleClickLanguage = () => {
     sendEvent();
@@ -33,9 +34,7 @@ export const Home: Page = () => {
         <link rel="icon" href="/logo/mitg-icon.svg" />
       </Head>
       <button onClick={handleClickLanguage}>{t(`home/template`)}</button>
-      <div>
-        <span>{response?.message}</span>
-      </div>
+      <div>{response?.message}</div>
       <div>
         <span>{isLoading ? `loading` : `not loading`}</span>
       </div>

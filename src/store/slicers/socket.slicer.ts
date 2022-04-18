@@ -5,11 +5,13 @@ import { AppState } from '..';
 interface Socket {
   id: string;
   connected: boolean;
+  namespace: string;
 }
 
 const initialState: Socket = {
   id: ``,
   connected: false,
+  namespace: ``,
 };
 
 export const socketSlicer = createSlice({

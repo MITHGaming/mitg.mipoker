@@ -1,17 +1,18 @@
-import { SocketContext } from '@/contexts/SocketContext';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Socket } from 'socket.io-client';
 
-export const useOnEvent = (eventName: string) => {
-  const socket = useContext(SocketContext);
+export const useOnEvent = (socket: Socket | null, eventName: string) => {
   const [res, setRes] = useState<any>(null);
 
   useEffect(() => {
-    socket.on(eventName, (res: any) => {
+    socket?.on(eventName, (res: any) => {
       setRes(res);
     });
 
+    console.log(socket?.id);
+
     return () => {
-      socket.off(eventName);
+      socket?.off(eventName);
     };
   }, []);
 
