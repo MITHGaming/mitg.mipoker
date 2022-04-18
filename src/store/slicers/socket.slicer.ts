@@ -18,7 +18,7 @@ export const socketSlicer = createSlice({
   name: `socket`,
   initialState,
   reducers: {
-    setConnected: (state, action) => {
+    setStatusSocket: (state, action) => {
       return {
         ...state,
         ...action.payload,
@@ -36,7 +36,7 @@ export const socketSlicer = createSlice({
   },
 });
 
-export const { setConnected } = socketSlicer.actions;
+export const { setStatusSocket } = socketSlicer.actions;
 export const getId = () => (state: AppState) => state.socket.id;
 export const getConnected = () => (state: AppState) => state.socket;
 

@@ -10,7 +10,7 @@ export const Home: Page = () => {
   const { t, changeLanguage, locale } = useTranslation();
   const store = useStore();
   const isLoading = useSelector(selectIsLoading());
-  const socket = useSocket(``);
+  const socket = useSocket(`/`);
   const { sendEvent, response } = useEmitEvent(socket, `status:ok`, {
     status: `200`,
   });
