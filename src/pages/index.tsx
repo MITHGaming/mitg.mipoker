@@ -3,7 +3,6 @@ import { useSocket } from '@/hooks/socket/useSocket';
 import useTranslation from '@/hooks/useTranslation';
 import { selectIsLoading, setLoading } from '@/store/slicers';
 import { Page } from '@/typings/page';
-import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import { useSelector, useStore } from 'react-redux';
 
@@ -36,9 +35,6 @@ export const Home: Page = () => {
       </Head>
 
       <button onClick={handleClickLanguage}>{t(`home/template`)}</button>
-      <div>
-        <button onClick={() => signIn(`google`)}>Logar Google</button>
-      </div>
       <div>{response?.message}</div>
       <div>
         <span>{isLoading ? `loading` : `not loading`}</span>
