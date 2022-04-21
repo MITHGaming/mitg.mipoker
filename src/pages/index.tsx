@@ -3,7 +3,9 @@ import { useSocket } from '@/hooks/socket/useSocket';
 import useTranslation from '@/hooks/useTranslation';
 import { selectIsLoading, setLoading } from '@/store/slicers';
 import { Page } from '@/typings/page';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import { useSelector, useStore } from 'react-redux';
 
 export const Home: Page = () => {
@@ -14,6 +16,8 @@ export const Home: Page = () => {
   const { sendEvent, response } = useEmitEvent(socket, `status:ok`, {
     status: `200`,
   });
+
+  const { data: session } = useSession();
 
   const handleClickLanguage = () => {
     sendEvent();
@@ -26,6 +30,10 @@ export const Home: Page = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(session);
+  }, [session]);
+
   return (
     <div>
       <Head>
@@ -33,6 +41,16 @@ export const Home: Page = () => {
         <meta name="description" content="Webpage to game miPoker" />
         <link rel="icon" href="/logo/mitg-icon.svg" />
       </Head>
+
+      <div>
+        <button onClick={() => signIn(`discord`)}>Login Discord</button>
+      </div>
+      <div>
+        <button onClick={() => signIn(`github`)}>Login Github</button>
+      </div>
+      <div>
+        <button onClick={() => signOut()}>Deslogar</button>
+      </div>
 
       <button onClick={handleClickLanguage}>{t(`home/template`)}</button>
       <div>{response?.message}</div>

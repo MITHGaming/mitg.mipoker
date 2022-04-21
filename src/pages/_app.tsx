@@ -6,16 +6,23 @@ import '@/styles/resets/_modern-normalize.css';
 import LanguageProvider from '@/contexts/LanguageContext';
 import { wrapper } from '@/store';
 import SocketProvider from '@/contexts/SocketContext';
+import { SessionProvider } from 'next-auth/react';
 
-export const MyApp = ({ Component, pageProps, router }: AppProps) => {
+export const MyApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+  router,
+}: AppProps) => {
   return (
-    <LanguageProvider>
-      <SocketProvider>
-        <Layout>
-          <Component {...pageProps} key={router.route} />
-        </Layout>
-      </SocketProvider>
-    </LanguageProvider>
+    <SessionProvider session={session}>
+      <LanguageProvider>
+        <SocketProvider>
+          <Layout>
+            <Component {...pageProps} key={router.route} />
+          </Layout>
+        </SocketProvider>
+      </LanguageProvider>
+    </SessionProvider>
   );
 };
 
