@@ -16,5 +16,33 @@ export default NextAuth({
       clientSecret: env.githubProvider.clientSecret,
     }),
   ],
+  callbacks: {
+    session: async ({
+      session,
+      user,
+    }: {
+      session: any;
+      token: any;
+      user: any;
+    }): Promise<any> => {
+      const newSession = {
+        user: {
+          ...session.user,
+          id: user.id,
+        },
+        expires: session.expires,
+      };
+
+      return Promise.resolve(newSession);
+    },
+  },
   secret: env.nextAuth.secret,
+  session: {
+    strategy: `database`,
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    updateAge: 1000 * 60 * 60 * 24, // 1 day
+  },
+  pages: {
+    signIn: `/signin`,
+  },
 });
