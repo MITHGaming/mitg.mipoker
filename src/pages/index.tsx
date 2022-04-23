@@ -1,6 +1,7 @@
 import { useEmitEvent } from '@/hooks/socket/useEmitEvent';
 import { useSocket } from '@/hooks/socket/useSocket';
 import useTranslation from '@/hooks/useTranslation';
+import api from '@/lib/axios/api';
 import { selectIsLoading, setLoading } from '@/store/slicers';
 import { Page } from '@/typings/page';
 import { signIn, signOut, useSession } from 'next-auth/react';
@@ -29,6 +30,15 @@ export const Home: Page = () => {
       changeLanguage(`ptBr`);
     }
   };
+
+  useEffect(() => {
+    const testCookie = async () => {
+      const data = await api.post(`/api/cookie/test`);
+      console.log(data);
+    };
+
+    testCookie();
+  }, []);
 
   useEffect(() => {
     console.log(session);

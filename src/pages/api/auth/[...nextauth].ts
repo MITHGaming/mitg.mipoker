@@ -3,6 +3,7 @@ import env from '@/environment';
 import DiscordProvider from 'next-auth/providers/discord';
 import GithubProvider from 'next-auth/providers/github';
 import { miPokerAdapter } from '@/lib/NextAuth/Adapter/miPoker';
+import jwt from 'jsonwebtoken';
 
 export default NextAuth({
   adapter: miPokerAdapter(),
@@ -17,18 +18,25 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    session: async ({
-      session,
-      user,
-    }: {
-      session: any;
-      token: any;
-      user: any;
-    }): Promise<any> => {
+    jwt: async ({ token, user }: any) => {
+      const isUserSignedIn = user ? true : false;
+      if (isUserSignedIn) {
+        token.id = user?.id;
+        token.role = user?.role.name;
+      }
+      return Promise.resolve(token);
+    },
+    session: async ({ session, token }): Promise<any> => {
+      const encodedToken = jwt.sign(token, env.nextAuth.secret);
       const newSession = {
         user: {
           ...session.user,
-          id: user.id,
+          avatar: token?.avatar,
+        },
+        auth: {
+          role: token?.role,
+          token: encodedToken,
+          id: token?.id,
         },
         expires: session.expires,
       };
@@ -37,12 +45,35 @@ export default NextAuth({
     },
   },
   secret: env.nextAuth.secret,
+  jwt: {
+    encode: async ({ secret, token, maxAge }): Promise<any> => {
+      const jwtClaims = {
+        id: token?.sub || token?.id,
+        name: token?.name,
+        avatar: token?.picture || token?.avatar,
+        email: token?.email,
+        state: token?.state,
+        role: token?.role,
+      };
+
+      const newToken = jwt.sign(jwtClaims, secret, { expiresIn: maxAge });
+
+      return Promise.resolve(newToken);
+    },
+    decode: async ({ secret, token }): Promise<any> => {
+      const decoded = jwt.verify(token || ``, secret);
+
+      return Promise.resolve(decoded);
+    },
+  },
   session: {
-    strategy: `database`,
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-    updateAge: 1000 * 60 * 60 * 24, // 1 day
+    strategy: `jwt`,
+    maxAge: 168 * 60 * 60, // 1 week
   },
   pages: {
     signIn: `/signin`,
+  },
+  theme: {
+    colorScheme: `dark`,
   },
 });
