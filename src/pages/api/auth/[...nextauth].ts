@@ -23,6 +23,7 @@ export default NextAuth({
       if (isUserSignedIn) {
         token.id = user?.id;
         token.role = user?.role.name;
+        token.roleId = user?.role.id;
       }
       return Promise.resolve(token);
     },
@@ -32,11 +33,12 @@ export default NextAuth({
         user: {
           ...session.user,
           avatar: token?.avatar,
+          id: token?.id,
         },
         auth: {
           role: token?.role,
+          roleId: token?.roleId,
           token: encodedToken,
-          id: token?.id,
         },
         expires: session.expires,
       };
@@ -54,6 +56,7 @@ export default NextAuth({
         email: token?.email,
         state: token?.state,
         role: token?.role,
+        roleId: token?.roleId,
       };
 
       const newToken = jwt.sign(jwtClaims, secret, { expiresIn: maxAge });
@@ -71,7 +74,7 @@ export default NextAuth({
     maxAge: 168 * 60 * 60, // 1 week
   },
   pages: {
-    signIn: `/signin`,
+    //signIn: `/signin`,
   },
   theme: {
     colorScheme: `dark`,
